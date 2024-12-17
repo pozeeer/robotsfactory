@@ -15,4 +15,20 @@ def catch_exceptions(func):
             return JsonResponse({"error": "Validation Error"}, status=400)
         except TypeError:
             return JsonResponse({"error": "Type Error"}, status=400)
+        except ValueError:
+            return JsonResponse({"error": "Value Error"}, status=400)
+
+    return wrapper
+
+def handle_report_errors(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except ValueError:
+            # Если данных нет для отчета
+            return JsonResponse({"error": "Нет данных для формирования отчета."}, status=404)
+        except Exception:
+            # Любая другая ошибка
+            return JsonResponse({"error": "Не удалось сформировать отчет. Обратитесь к администратору."}, status=500)
     return wrapper
