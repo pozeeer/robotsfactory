@@ -4,6 +4,8 @@ from django.http import JsonResponse
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from django.core.mail import send_mail
+from django.conf import settings
 
 from robots.services import ExcelReportGenerator
 from robots.decorators import catch_exceptions, handle_report_errors
